@@ -7,7 +7,8 @@ from urllib.parse import urlparse
 from seo_content import CATEGORY_INFO, SEO, enrich
 ROOT=Path(__file__).parent
 OUT=ROOT/'dist'
-BASE=os.environ.get('SITE_URL') or os.environ.get('URL') or os.environ.get('CF_PAGES_URL') or 'https://toolnest-haris.famousduck65.chatgpt.site'
+DEPLOYMENT=json.loads((ROOT/'DEPLOYMENT.json').read_text())
+BASE=os.environ.get('SITE_URL') or os.environ.get('URL') or os.environ.get('CF_PAGES_URL') or DEPLOYMENT.get('public_origin') or 'https://toolnest-haris.famousduck65.chatgpt.site'
 BASE=BASE.rstrip('/')
 parsed=urlparse(BASE)
 if parsed.scheme!='https' or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password or any(c in BASE for c in '<>\"\r\n'):

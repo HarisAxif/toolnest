@@ -25,13 +25,13 @@ An optional later improvement is to set the Workers Build command to `python3 sc
 
 This first deploy uses the existing noindex preview content. It is for verifying that deployment works. It is not yet an AdSense-ready or search-indexed public launch.
 
-Once the actual stable workers.dev URL and authorized public support contact are known, regenerate the checked-in output with SITE_URL set to that stable HTTPS origin, SUPPORT_EMAIL set to the authorized address, and PUBLIC_LAUNCH=true. Validate and commit the new output. Runtime Worker variables alone do not rewrite static HTML; a source build is required. Do not publish a guessed address or contact.
+The owner supplied https://toolnest.harisaxif.workers.dev as the stable origin. DEPLOYMENT.json records it, and build.py uses it by default for canonical URLs and the sitemap. Search indexing remains disabled pending an authorized public support contact. Once supplied, regenerate the checked-in output with SUPPORT_EMAIL set to that authorized address and PUBLIC_LAUNCH=true. Validate and commit the new output. Runtime Worker variables alone do not rewrite static HTML; a source build is required. Do not publish a guessed contact.
 
 No Worker script, dynamic API, database, server upload pipeline or paid subscription is added. Cloudflare documents static-asset requests as free and unlimited, subject to platform terms and asset/build limits. No paid plan or payment setting is changed by this source fix.
 
 ## Verification limits
 
-Local build, link/schema checks, asset presence and JSON configuration are verified. The authenticated Cloudflare dashboard is not accessible through the current cloud-browser login, so the actual remote deployment must be confirmed from the new build result and public URL. No successful deployment is claimed before that evidence exists.
+Local build, link/schema checks, asset presence and JSON configuration are verified. GitHub's Workers Builds: toolnest check confirmed success for commit e9af6146d9fd7092a62f8d009247cd27a53c9b59. The live homepage, word counter, final-grade calculator and JSON formatter were verified in the cloud browser on 21 October 2026 after the earlier browser timeout was resolved. A separate server-side fetch returned HTTP 403, which did not prevent browser access. Future updates should verify the latest commit's build result, then test the public tools when access permits.
 
 Sources:
 https://developers.cloudflare.com/workers/static-assets/

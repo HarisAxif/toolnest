@@ -2,13 +2,16 @@
   "source_repository": "HarisAxif/toolnest",
   "source_branch": "main",
   "hosting_provider": "cloudflare-workers-static-assets",
-  "public_origin": null,
+  "public_origin": "https://toolnest.harisaxif.workers.dev",
   "public_contact": null,
   "public_launch_enabled": false,
   "git_deployment_connected": true,
   "build_command": null,
   "publish_directory": "dist",
   "deploy_command": "npx wrangler deploy",
-  "deployment_verified": false,
+  "deployment_verified": true,
+  "build_verified": true,
+  "verified_build_commit": "e9af6146d9fd7092a62f8d009247cd27a53c9b59",
+  "http_verification": "Live homepage, word counter, final-grade calculator and JSON formatter verified through the cloud browser on 21 October 2026. The earlier browser timeout was resolved; the separate server-side fetch returned 403.",
   "static_output_committed": true
 }
