@@ -23,9 +23,9 @@ An optional later improvement is to set the Workers Build command to `python3 sc
 
 ## Public launch
 
-This first deploy uses the existing noindex preview content. It is for verifying that deployment works. It is not yet an AdSense-ready or search-indexed public launch.
+The owner authorized the public support email and enabling search indexing on 21 October 2026. The production build is configured with index,follow on content pages and an Allow rule plus the sitemap address in robots.txt. The custom 404 stays noindex. Enabling crawling does not prove that Google has indexed the site or approved AdSense.
 
-The owner supplied https://toolnest.harisaxif.workers.dev as the stable origin. DEPLOYMENT.json records it, and build.py uses it by default for canonical URLs and the sitemap. Search indexing remains disabled pending an authorized public support contact. Once supplied, regenerate the checked-in output with SUPPORT_EMAIL set to that authorized address and PUBLIC_LAUNCH=true. Validate and commit the new output. Runtime Worker variables alone do not rewrite static HTML; a source build is required. Do not publish a guessed contact.
+The owner supplied https://toolnest.harisaxif.workers.dev as the stable origin. DEPLOYMENT.json records it, and build.py uses it by default for canonical URLs and the sitemap. DEPLOYMENT.json records public_contact as harisaxif@gmail.com and public_launch_enabled as true, so normal production rebuilds preserve the authorized launch settings. SUPPORT_EMAIL and PUBLIC_LAUNCH environment variables can explicitly override these defaults. Validate and commit regenerated output. The separate owner-private Sites preview must be built with PUBLIC_LAUNCH=false after the public output has been captured for GitHub. Runtime Worker variables alone do not rewrite static HTML; a source build is required. Do not publish a guessed contact.
 
 No Worker script, dynamic API, database, server upload pipeline or paid subscription is added. Cloudflare documents static-asset requests as free and unlimited, subject to platform terms and asset/build limits. No paid plan or payment setting is changed by this source fix.
 

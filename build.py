@@ -14,13 +14,14 @@ parsed=urlparse(BASE)
 if parsed.scheme!='https' or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password or any(c in BASE for c in '<>\"\r\n'):
     raise ValueError('SITE_URL must be an HTTPS origin without a path, query or fragment.')
 IS_PRODUCTION=os.environ.get('CONTEXT','production')=='production'
+PUBLIC_SETTING=os.environ.get('PUBLIC_LAUNCH',str(DEPLOYMENT.get('public_launch_enabled',False))).lower()=='true'
 if os.environ.get('CF_PAGES')=='1':
     IS_PRODUCTION=IS_PRODUCTION and os.environ.get('CF_PAGES_BRANCH')==os.environ.get('PRODUCTION_BRANCH','main')
-    if IS_PRODUCTION and os.environ.get('PUBLIC_LAUNCH','false').lower()=='true' and not os.environ.get('SITE_URL'):
+    if IS_PRODUCTION and PUBLIC_SETTING and not os.environ.get('SITE_URL'):
         raise ValueError('Set SITE_URL to your stable project.pages.dev origin before a public Cloudflare build.')
-PUBLIC=os.environ.get('PUBLIC_LAUNCH','false').lower()=='true' and IS_PRODUCTION
+PUBLIC=PUBLIC_SETTING and IS_PRODUCTION
 SEARCH_CONSOLE=os.environ.get('GOOGLE_SITE_VERIFICATION','').strip()
-SUPPORT_EMAIL=os.environ.get('SUPPORT_EMAIL','').strip()
+SUPPORT_EMAIL=os.environ.get('SUPPORT_EMAIL',DEPLOYMENT.get('public_contact') or '').strip()
 if PUBLIC and not re.fullmatch(r'[A-Za-z0-9.!#$%&*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}',SUPPORT_EMAIL):
     raise ValueError('Set a valid SUPPORT_EMAIL before enabling PUBLIC_LAUNCH.')
 TOOLS=[
@@ -134,8 +135,10 @@ for slug,(title,lead,secs) in PAGES.items():
    'A public support and privacy contact will be added before this preview is opened to public visitors.':SUPPORT_EMAIL,
    'This private-preview notice was updated on 21 October 2026. Public operator and contact details must be completed before launch.':'These terms were updated on 21 October 2026. Contact the operator using the details below.'}
   secs=[(h,next((p.replace(old,new) for old,new in replacements.items() if old in p),p)) for h,p in secs]
- if SUPPORT_EMAIL: secs=secs+ [('Contact the operator',SUPPORT_EMAIL)]
- write('/'+slug+'/',title+' | Toolnest',lead,f'<article class="article"><span class="eyebrow">THE DETAILS</span><h1>{title}</h1><p class="lead">{lead}</p>'+''.join(f'<h2>{escape(h)}</h2><p>{escape(p)}</p>' for h,p in secs)+'</article>')
+ if SUPPORT_EMAIL and not any(p==SUPPORT_EMAIL for _,p in secs): secs=secs+ [('Contact the operator',SUPPORT_EMAIL)]
+ def paragraph(p):
+  return f'<a href="mailto:{escape(SUPPORT_EMAIL,quote=True)}">{escape(SUPPORT_EMAIL)}</a>' if SUPPORT_EMAIL and p==SUPPORT_EMAIL else escape(p)
+ write('/'+slug+'/',title+' | Toolnest',lead,f'<article class="article"><span class="eyebrow">THE DETAILS</span><h1>{title}</h1><p class="lead">{lead}</p>'+''.join(f'<h2>{escape(h)}</h2><p>{paragraph(p)}</p>' for h,p in secs)+'</article>')
 write('/404/','Page not found | Toolnest','Find a useful tool in the Toolnest directory.','<section class="content-page"><span class="eyebrow">404</span><h1>This shortcut goes nowhere.</h1><p class="lead">Let’s get you back to the toolkit.</p><a class="button" href="/">Explore the tools ↗</a></section>')
 (OUT/'404.html').write_text((OUT/'404/index.html').read_text())
 urls=['/','/tools/']+['/tools/'+v[0]+'/' for v in CATEGORY_INFO.values()]+['/tools/'+t[0]+'/' for t in TOOLS]+['/guides/']+['/guides/'+g[0]+'/' for g in GUIDES]+['/'+p+'/' for p in PAGES]
