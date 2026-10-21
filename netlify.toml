@@ -1,0 +1,27 @@
+[build]
+  command = "python3 scripts/build_host.py"
+  publish = "dist"
+
+[build.environment]
+  PYTHON_VERSION = "3.13"
+
+# Set PUBLIC_LAUNCH=true and SUPPORT_EMAIL in Netlify's production environment
+# only after completing the launch review. Preview builds always stay noindex.
+# Set SITE_URL to your final HTTPS domain; otherwise Netlify's URL is used.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/style.css"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/app.js"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

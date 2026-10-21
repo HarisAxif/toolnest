@@ -1,0 +1,11 @@
+{
+  "source_repository": "HarisAxif/toolnest",
+  "source_branch": "main",
+  "hosting_provider": null,
+  "public_origin": null,
+  "public_contact": null,
+  "public_launch_enabled": false,
+  "git_deployment_connected": false,
+  "build_command": "python3 scripts/build_host.py",
+  "publish_directory": "dist"
+}
