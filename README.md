@@ -1,3 +1,5 @@
+> This `pages` branch stages the free Cloudflare Pages migration. See [CLOUDFLARE_PAGES.md](CLOUDFLARE_PAGES.md) for the exact dashboard settings. `main` remains the active Workers source until the new Pages URL has been deployed and verified. Do not switch the maintenance target or public canonical origin before that verification.
+
 # Toolnest
 
 Free browser-based image, writing, study and developer tools. Source: https://github.com/HarisAxif/toolnest.

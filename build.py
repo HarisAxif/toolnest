@@ -16,7 +16,7 @@ if parsed.scheme!='https' or not parsed.netloc or parsed.path or parsed.query or
 IS_PRODUCTION=os.environ.get('CONTEXT','production')=='production'
 PUBLIC_SETTING=os.environ.get('PUBLIC_LAUNCH',str(DEPLOYMENT.get('public_launch_enabled',False))).lower()=='true'
 if os.environ.get('CF_PAGES')=='1':
-    IS_PRODUCTION=IS_PRODUCTION and os.environ.get('CF_PAGES_BRANCH')==os.environ.get('PRODUCTION_BRANCH','main')
+    IS_PRODUCTION=IS_PRODUCTION and os.environ.get('CF_PAGES_BRANCH')==os.environ.get('PRODUCTION_BRANCH',DEPLOYMENT.get('source_branch','main'))
     if IS_PRODUCTION and PUBLIC_SETTING and not os.environ.get('SITE_URL'):
         raise ValueError('Set SITE_URL to your stable project.pages.dev origin before a public Cloudflare build.')
 PUBLIC=PUBLIC_SETTING and IS_PRODUCTION

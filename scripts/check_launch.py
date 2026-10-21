@@ -1,7 +1,7 @@
 """Exercise production/preview builds, then restore the configured default build."""
 import os,subprocess
 from pathlib import Path
-base={**os.environ,'SITE_URL':'https://toolnest-test.pages.dev','SUPPORT_EMAIL':'support@example.com','PUBLIC_LAUNCH':'true','CONTEXT':'production','GOOGLE_SITE_VERIFICATION':'sample-token-for-tests'}
+base={**os.environ,'SITE_URL':'https://toolnest-test.pages.dev','SUPPORT_EMAIL':'support@example.com','PUBLIC_LAUNCH':'true','CONTEXT':'production','PRODUCTION_BRANCH':'main','GOOGLE_SITE_VERIFICATION':'sample-token-for-tests'}
 def build(env):return subprocess.run(['python','build.py'],env=env,capture_output=True,text=True)
 try:
  result=build(base);assert result.returncode==0,result.stderr
