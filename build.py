@@ -20,7 +20,7 @@ if os.environ.get('CF_PAGES')=='1':
     if IS_PRODUCTION and PUBLIC_SETTING and not os.environ.get('SITE_URL'):
         raise ValueError('Set SITE_URL to your stable project.pages.dev origin before a public Cloudflare build.')
 PUBLIC=PUBLIC_SETTING and IS_PRODUCTION
-SEARCH_CONSOLE=os.environ.get('GOOGLE_SITE_VERIFICATION','').strip()
+SEARCH_CONSOLE=os.environ.get('GOOGLE_SITE_VERIFICATION',DEPLOYMENT.get('google_site_verification','')).strip()
 SUPPORT_EMAIL=os.environ.get('SUPPORT_EMAIL',DEPLOYMENT.get('public_contact') or '').strip()
 if PUBLIC and not re.fullmatch(r'[A-Za-z0-9.!#$%&*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}',SUPPORT_EMAIL):
     raise ValueError('Set a valid SUPPORT_EMAIL before enabling PUBLIC_LAUNCH.')

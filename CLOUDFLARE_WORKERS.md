@@ -37,3 +37,7 @@ Sources:
 https://developers.cloudflare.com/workers/static-assets/
 https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/
 https://developers.cloudflare.com/workers/ci-cd/builds/configuration/
+
+## Search Console ownership
+
+The URL-prefix property is https://toolnest.harisaxif.workers.dev/. Google supplied the HTML meta tag stored as google_site_verification in DEPLOYMENT.json. Normal builds preserve this tag; removing it can break ownership verification. GOOGLE_SITE_VERIFICATION can override it for a separate deployment. The sitemap to submit in Search Console is https://toolnest.harisaxif.workers.dev/sitemap.xml. Verify the actual ownership and submission result in Google before reporting success.

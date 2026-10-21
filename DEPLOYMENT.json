@@ -5,6 +5,8 @@
   "public_origin": "https://toolnest.harisaxif.workers.dev",
   "public_contact": "harisaxif@gmail.com",
   "public_launch_enabled": true,
+  "search_console_property": "https://toolnest.harisaxif.workers.dev/",
+  "google_site_verification": "xa4WCqWa8R1sf8xg_o1LpThDZA5ft_PP1jKcgzQDBoc",
   "git_deployment_connected": true,
   "build_command": null,
   "publish_directory": "dist",
