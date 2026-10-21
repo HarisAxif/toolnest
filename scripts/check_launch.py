@@ -1,5 +1,5 @@
 """Exercise production/preview builds, then restore the configured default build."""
-import os,subprocess
+import os,subprocess,json
 from pathlib import Path
 base={**os.environ,'SITE_URL':'https://toolnest-test.pages.dev','SUPPORT_EMAIL':'support@example.com','PUBLIC_LAUNCH':'true','CONTEXT':'production','PRODUCTION_BRANCH':'main','GOOGLE_SITE_VERIFICATION':'sample-token-for-tests'}
 def build(env):return subprocess.run(['python','build.py'],env=env,capture_output=True,text=True)
@@ -21,7 +21,12 @@ try:
  assert build({**base,'CF_PAGES':'1','CF_PAGES_BRANCH':'feature-branch'}).returncode==0
  assert 'noindex,nofollow' in Path('dist/index.html').read_text()
  no_origin={**base,'CF_PAGES':'1','CF_PAGES_BRANCH':'main'};no_origin.pop('SITE_URL')
- assert build(no_origin).returncode!=0
+ configured_origin=json.loads(Path('DEPLOYMENT.json').read_text()).get('public_origin')
+ fallback=build({**no_origin,'CF_PAGES_URL':'https://random-deployment.toolnest-test.pages.dev'})
+ assert (fallback.returncode==0)==bool(configured_origin)
+ if configured_origin:
+  assert f'<link rel="canonical" href="{configured_origin}/">' in Path('dist/index.html').read_text()
+  assert f'Sitemap: {configured_origin}/sitemap.xml' in Path('dist/robots.txt').read_text()
  assert build({**os.environ,'PUBLIC_LAUNCH':'false'}).returncode==0
  assert 'noindex,nofollow' in Path('dist/index.html').read_text()
  assert 'Disallow: /' in Path('dist/robots.txt').read_text()

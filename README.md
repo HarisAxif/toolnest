@@ -1,24 +1,20 @@
-> This `pages` branch stages the free Cloudflare Pages migration. See [CLOUDFLARE_PAGES.md](CLOUDFLARE_PAGES.md) for the exact dashboard settings. `main` remains the active Workers source until the new Pages URL has been deployed and verified. Do not switch the maintenance target or public canonical origin before that verification.
-
 # Toolnest
 
-Free browser-based image, writing, study and developer tools. Source: https://github.com/HarisAxif/toolnest.
+Production: https://toolnest-haris.pages.dev/
 
-## Hosting setup
+Source: HarisAxif/toolnest, branch pages. The Cloudflare Pages project is toolnest-haris and publishes dist/. The former Workers site uses the separate main branch; it remains available until a verified redirect is configured. The linked Sites project is an owner-private preview.
 
-For a zero-paid-service launch, use Cloudflare Pages with its generated pages.dev address, or Netlify with its generated netlify.app address. A custom domain is optional. The current Cloudflare connection uses a Workers project, with npx wrangler deploy and no build command. See CLOUDFLARE_WORKERS.md. The successful remote deployment has not been verified yet.
+## Build and publish
 
-- Build command: `python3 scripts/build_host.py`
-- Output directory: `dist`
-- Production branch: `main`
-- Required public launch settings: `SITE_URL`, `SUPPORT_EMAIL`, `PUBLIC_LAUNCH=true`
-- Optional Search Console HTML token: `GOOGLE_SITE_VERIFICATION`
+Run python3 scripts/build_host.py. DEPLOYMENT.json supplies the stable canonical origin, approved support address, production branch and public indexing setting. Explicit environment variables can override these values. Commit source and generated dist files together to the pages branch. Check the Cloudflare Pages deployment result for the new commit, then verify the public URL. See CLOUDFLARE_PAGES.md and SEO_OPERATIONS.md.
 
-`PUBLIC_LAUNCH` defaults to false. Do not enable it until the public contact and policies are reviewed. The checked build script runs HTML/link/schema and JSON integrity checks. The current Workers dashboard deploys the checked-in output directly. The complete generated dist/ output is versioned for the current Workers deployment. After content changes, regenerate it with the checked build script and commit both source and generated output. No server, paid API or database is used.
+Run python3 scripts/check_launch.py when changing launch configuration. It verifies production/preview indexing, stable origins, contact links and input guards, then restores the configured default output.
 
-Read FREE_HOSTING.md for the free-hosting comparison, NETLIFY_SETUP.md for Netlify details, SEO_PLAN.md for the keyword/usefulness audit and SEO_OPERATIONS.md for scheduled maintenance boundaries. Google must approve any AdSense application; no advertising or analytics credentials are configured.
+## Private preview
 
-## Local checks
+Build with PUBLIC_LAUNCH=false for the separate owner-private Sites preview. Capture the public GitHub output before making the preview build; never overwrite the production GitHub dist with noindex preview output. Preserve the existing Sites project ID and owner-only audience.
 
-Run `python3 scripts/build_host.py` for the deployable build and checks. Run `python3 scripts/check_launch.py` separately to exercise public/preview launch settings; that command restores a private build afterward and must not be used as the production build command.
+## Google setup
+
+The previous Workers Search Console property was verified. The new Pages property requires verification/submission in Google; its verification meta tag is preserved in DEPLOYMENT.json. AdSense's signup URL field accepted the Pages address, but account creation and site review remain pending. No ads, tracking scripts, paid API, database or hosting upgrade are activated.
 

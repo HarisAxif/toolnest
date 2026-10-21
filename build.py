@@ -8,7 +8,7 @@ from seo_content import CATEGORY_INFO, SEO, enrich
 ROOT=Path(__file__).parent
 OUT=ROOT/'dist'
 DEPLOYMENT=json.loads((ROOT/'DEPLOYMENT.json').read_text())
-BASE=os.environ.get('SITE_URL') or os.environ.get('URL') or os.environ.get('CF_PAGES_URL') or DEPLOYMENT.get('public_origin') or 'https://toolnest-haris.famousduck65.chatgpt.site'
+BASE=os.environ.get('SITE_URL') or DEPLOYMENT.get('public_origin') or os.environ.get('URL') or os.environ.get('CF_PAGES_URL') or 'https://toolnest-haris.famousduck65.chatgpt.site'
 BASE=BASE.rstrip('/')
 parsed=urlparse(BASE)
 if parsed.scheme!='https' or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password or any(c in BASE for c in '<>\"\r\n'):
@@ -17,8 +17,8 @@ IS_PRODUCTION=os.environ.get('CONTEXT','production')=='production'
 PUBLIC_SETTING=os.environ.get('PUBLIC_LAUNCH',str(DEPLOYMENT.get('public_launch_enabled',False))).lower()=='true'
 if os.environ.get('CF_PAGES')=='1':
     IS_PRODUCTION=IS_PRODUCTION and os.environ.get('CF_PAGES_BRANCH')==os.environ.get('PRODUCTION_BRANCH',DEPLOYMENT.get('source_branch','main'))
-    if IS_PRODUCTION and PUBLIC_SETTING and not os.environ.get('SITE_URL'):
-        raise ValueError('Set SITE_URL to your stable project.pages.dev origin before a public Cloudflare build.')
+    if IS_PRODUCTION and PUBLIC_SETTING and not (os.environ.get('SITE_URL') or DEPLOYMENT.get('public_origin')):
+        raise ValueError('Set SITE_URL or DEPLOYMENT.json public_origin to your stable project.pages.dev origin before a public Cloudflare build.')
 PUBLIC=PUBLIC_SETTING and IS_PRODUCTION
 SEARCH_CONSOLE=os.environ.get('GOOGLE_SITE_VERIFICATION',DEPLOYMENT.get('google_site_verification','')).strip()
 SUPPORT_EMAIL=os.environ.get('SUPPORT_EMAIL',DEPLOYMENT.get('public_contact') or '').strip()
