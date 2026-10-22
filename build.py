@@ -21,6 +21,7 @@ if os.environ.get('CF_PAGES')=='1':
         raise ValueError('Set SITE_URL or DEPLOYMENT.json public_origin to your stable project.pages.dev origin before a public Cloudflare build.')
 PUBLIC=PUBLIC_SETTING and IS_PRODUCTION
 SEARCH_CONSOLE=os.environ.get('GOOGLE_SITE_VERIFICATION',DEPLOYMENT.get('google_site_verification','')).strip()
+SEARCH_CONSOLE_TOKENS=list(dict.fromkeys(token for token in [SEARCH_CONSOLE,*DEPLOYMENT.get('additional_google_site_verifications',[])] if token))
 SUPPORT_EMAIL=os.environ.get('SUPPORT_EMAIL',DEPLOYMENT.get('public_contact') or '').strip()
 if PUBLIC and not re.fullmatch(r'[A-Za-z0-9.!#$%&*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}',SUPPORT_EMAIL):
     raise ValueError('Set a valid SUPPORT_EMAIL before enabling PUBLIC_LAUNCH.')
@@ -52,7 +53,7 @@ enrich(TOOLS,GUIDES)
 def icon(t):return f'<span class="tool-icon {t[2].lower()}">{escape(t[3])}</span>'
 def card(t):return f'<a class="tool-card" data-category="{t[2]}" data-search="{escape((t[1]+" "+t[4]).lower())}" href="/tools/{t[0]}/">{icon(t)}<span class="card-arrow" aria-hidden="true">↗</span><h3>{t[1]}</h3><p>{t[4]}</p><span class="card-category">{t[2]}</span></a>'
 def shell(title,desc,path,body,kind='website',extra=''):
-    verification=f'<meta name="google-site-verification" content="{escape(SEARCH_CONSOLE,quote=True)}">' if SEARCH_CONSOLE else ''
+    verification=''.join(f'<meta name="google-site-verification" content="{escape(token,quote=True)}">' for token in SEARCH_CONSOLE_TOKENS)
     url=BASE+path
     schemas=[{'@context':'https://schema.org','@type':'WebSite' if path=='/' else 'WebPage','name':'Toolnest' if path=='/' else title,'description':desc,'url':url,'@id':url+'#page'}]
     if path.startswith('/tools/') and path.strip('/').split('/')[-1] in SEO:

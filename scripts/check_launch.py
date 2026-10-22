@@ -8,6 +8,8 @@ try:
  html=Path('dist/tools/final-grade-calculator/index.html').read_text();assert 'content="index,follow"' in html
  assert 'https://toolnest-test.pages.dev/tools/final-grade-calculator/' in html
  assert 'content="sample-token-for-tests"' in html
+ for token in json.loads(Path('DEPLOYMENT.json').read_text()).get('additional_google_site_verifications',[]):
+  assert f'<meta name="google-site-verification" content="{token}">' in html
  assert 'Sitemap: https://toolnest-test.pages.dev/sitemap.xml' in Path('dist/robots.txt').read_text()
  assert 'support@example.com' in Path('dist/contact/index.html').read_text()
  assert 'href="mailto:support@example.com"' in Path('dist/contact/index.html').read_text()
