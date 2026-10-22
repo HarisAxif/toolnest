@@ -16,11 +16,15 @@
   "deploy_command": null,
   "deployment_verified": true,
   "build_verified": true,
-  "verified_build_commit": "949a443ba3815f55b0c787a1c55ed59b61741a3f",
+  "verified_build_commit": "6039d81e26e405e93481435c92d0ebadb3203a5c",
   "http_verification": "Production indexing, stable canonical URLs, robots.txt and the 32-URL sitemap verified live on 21 October 2026; Cloudflare Pages deployment 21b8ff16 succeeded.",
   "static_output_committed": true,
   "previous_public_origin": "https://toolnest.harisaxif.workers.dev",
   "previous_source_branch": "main",
   "previous_search_console_property": "https://toolnest.harisaxif.workers.dev/",
-  "adsense_hostname_validation": "The Pages hostname passed the signup form URL check on 21 October 2026; account creation, site connection and Google review are not complete."
+  "search_console_verified": true,
+  "search_console_sitemap_status": "Submitted on 22 October 2026. Report says Couldn't fetch; Google live test successfully fetched the sitemap with crawling allowed. Homepage manual indexing request reached daily quota.",
+  "adsense_publisher_id": "ca-pub-6139358439617588",
+  "adsense_account_created": true,
+  "adsense_hostname_validation": "Account and toolnest-haris.pages.dev site are present in AdSense as of 22 October 2026. Ownership meta tag and ads.txt are prepared; payment information, website review, consent setup and ad activation are not complete."
 }

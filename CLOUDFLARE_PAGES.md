@@ -16,7 +16,7 @@ Use the stable project origin for public links, Search Console and AdSense. A pr
 
 Commit source and generated dist files together. Check the Cloudflare Pages result, not the separate legacy Workers Builds result for this branch. The old Worker remains served from main until a replacement redirect is verified. The private Sites preview keeps its owner-only audience and must be built with PUBLIC_LAUNCH=false.
 
-AdSense's signup field accepted the Pages hostname, but signup, review and approval are separate and remain pending. The new Search Console property also needs its own verification/submission. Keep the Google verification tag during maintenance. Do not activate ads until the actual publisher account, consent controls and privacy updates are ready.
+The Pages Search Console property was verified and its sitemap submitted on 22 October 2026. Keep both Google ownership tags during maintenance. The sitemap report initially says Couldn't fetch despite a successful live Google fetch; monitor that status rather than claiming it has cleared. The owner also completed AdSense signup; its real publisher ID supplies the production ownership meta tag and ads.txt. Payment details, website review, approval and consent setup remain separate. These ownership records do not activate ads. Do not activate ads until consent controls and privacy updates are ready.
 
 Sources:
 https://developers.cloudflare.com/pages/functions/wrangler-configuration/

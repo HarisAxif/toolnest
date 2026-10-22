@@ -10,6 +10,11 @@ try:
  assert 'content="sample-token-for-tests"' in html
  for token in json.loads(Path('DEPLOYMENT.json').read_text()).get('additional_google_site_verifications',[]):
   assert f'<meta name="google-site-verification" content="{token}">' in html
+ publisher=json.loads(Path('DEPLOYMENT.json').read_text()).get('adsense_publisher_id')
+ if publisher:
+  assert f'<meta name="google-adsense-account" content="{publisher}">' in html
+  assert Path('dist/ads.txt').read_text()==f'google.com, {publisher.removeprefix("ca-")}, DIRECT, f08c47fec0942fa0\n'
+  assert 'adsbygoogle.js' not in html
  assert 'Sitemap: https://toolnest-test.pages.dev/sitemap.xml' in Path('dist/robots.txt').read_text()
  assert 'support@example.com' in Path('dist/contact/index.html').read_text()
  assert 'href="mailto:support@example.com"' in Path('dist/contact/index.html').read_text()
@@ -32,6 +37,8 @@ try:
  assert build({**os.environ,'PUBLIC_LAUNCH':'false'}).returncode==0
  assert 'noindex,nofollow' in Path('dist/index.html').read_text()
  assert 'Disallow: /' in Path('dist/robots.txt').read_text()
+ assert 'google-adsense-account' not in Path('dist/index.html').read_text()
+ assert not Path('dist/ads.txt').exists()
  print('PASS: production indexing, stable canonicals/sitemap, verification/contact insertion, preview noindex, missing-contact and credentialed-origin guards, Cloudflare branch/origin checks.')
 finally:
  subprocess.run(['python','build.py'],check=True)

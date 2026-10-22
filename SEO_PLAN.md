@@ -54,9 +54,9 @@ WebSite, WebPage, WebApplication, Article and breadcrumb structured data describ
 
 ## Launch blockers and limits
 
-The Sites publication remains owner-private and noindex. Netlify and Cloudflare accounts have not been connected/deployed, a public address has not been selected, and the public support contact is missing. The build enforces a real contact value before public indexing. Actual mobile device QA, field Core Web Vitals, Search Console verification, indexing and AdSense review cannot be claimed as completed from a private preview.
+The public Cloudflare Pages site is https://toolnest-haris.pages.dev/, with approved support contact harisaxif@gmail.com, indexable content, stable canonicals and a 32-URL sitemap. The separate Sites preview remains owner-private and noindex. The Pages Search Console property was verified on 22 October 2026 and its sitemap submitted. Google's live sitemap fetch succeeded, but its sitemap report initially said Couldn't fetch and a homepage indexing request reached daily quota. Indexing and field Core Web Vitals are not yet established; actual mobile device QA has not been completed.
 
-No analytics, ad scripts, ad publisher IDs, consent manager or ads.txt publisher record have been installed. Configure these using real account details and applicable regional requirements before ads activation. Do not put pretend IDs or a blanket cookie banner in the site to imply compliance. Owner/operator details and notices need a real launch review.
+The owner created an AdSense account on 22 October 2026. Its real publisher ID is configured for the production ownership meta tag and ads.txt record. No analytics, ad-serving scripts or consent manager are installed. Complete payment/identity information, site verification/review, suitable consent controls and advertising privacy updates before activating ads. Do not use pretend IDs or a blanket cookie banner to imply compliance.
 
 ## Maintenance and seasonal opportunities
 

@@ -22,6 +22,9 @@ if os.environ.get('CF_PAGES')=='1':
 PUBLIC=PUBLIC_SETTING and IS_PRODUCTION
 SEARCH_CONSOLE=os.environ.get('GOOGLE_SITE_VERIFICATION',DEPLOYMENT.get('google_site_verification','')).strip()
 SEARCH_CONSOLE_TOKENS=list(dict.fromkeys(token for token in [SEARCH_CONSOLE,*DEPLOYMENT.get('additional_google_site_verifications',[])] if token))
+ADSENSE_PUBLISHER=DEPLOYMENT.get('adsense_publisher_id','')
+if ADSENSE_PUBLISHER and not re.fullmatch(r'ca-pub-[0-9]{16}',ADSENSE_PUBLISHER):
+    raise ValueError('AdSense publisher ID must use the ca-pub- followed by 16 digits format.')
 SUPPORT_EMAIL=os.environ.get('SUPPORT_EMAIL',DEPLOYMENT.get('public_contact') or '').strip()
 if PUBLIC and not re.fullmatch(r'[A-Za-z0-9.!#$%&*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}',SUPPORT_EMAIL):
     raise ValueError('Set a valid SUPPORT_EMAIL before enabling PUBLIC_LAUNCH.')
@@ -54,6 +57,8 @@ def icon(t):return f'<span class="tool-icon {t[2].lower()}">{escape(t[3])}</span
 def card(t):return f'<a class="tool-card" data-category="{t[2]}" data-search="{escape((t[1]+" "+t[4]).lower())}" href="/tools/{t[0]}/">{icon(t)}<span class="card-arrow" aria-hidden="true">↗</span><h3>{t[1]}</h3><p>{t[4]}</p><span class="card-category">{t[2]}</span></a>'
 def shell(title,desc,path,body,kind='website',extra=''):
     verification=''.join(f'<meta name="google-site-verification" content="{escape(token,quote=True)}">' for token in SEARCH_CONSOLE_TOKENS)
+    if PUBLIC and ADSENSE_PUBLISHER:
+        verification+=f'<meta name="google-adsense-account" content="{ADSENSE_PUBLISHER}">'
     url=BASE+path
     schemas=[{'@context':'https://schema.org','@type':'WebSite' if path=='/' else 'WebPage','name':'Toolnest' if path=='/' else title,'description':desc,'url':url,'@id':url+'#page'}]
     if path.startswith('/tools/') and path.strip('/').split('/')[-1] in SEO:
@@ -145,6 +150,10 @@ write('/404/','Page not found | Toolnest','Find a useful tool in the Toolnest di
 urls=['/','/tools/']+['/tools/'+v[0]+'/' for v in CATEGORY_INFO.values()]+['/tools/'+t[0]+'/' for t in TOOLS]+['/guides/']+['/guides/'+g[0]+'/' for g in GUIDES]+['/'+p+'/' for p in PAGES]
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{BASE}{p}</loc></url>' for p in urls)+'</urlset>')
 (OUT/'robots.txt').write_text('User-agent: *\n'+('Allow: /\nSitemap: '+BASE+'/sitemap.xml\n' if PUBLIC else 'Disallow: /\n'))
+if PUBLIC and ADSENSE_PUBLISHER:
+    (OUT/'ads.txt').write_text(f'google.com, {ADSENSE_PUBLISHER.removeprefix("ca-")}, DIRECT, f08c47fec0942fa0\n')
+else:
+    (OUT/'ads.txt').unlink(missing_ok=True)
 (OUT/'favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#7454db"/><text x="32" y="47" font-size="48" text-anchor="middle" fill="#fff">✳</text></svg>')
 (OUT/'_headers').write_text('/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n')
 print(f'Built {len(urls)} content pages plus custom 404. Indexing: {PUBLIC}.')
