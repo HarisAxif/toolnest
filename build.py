@@ -5,6 +5,8 @@ import os
 import re
 from urllib.parse import urlparse
 from seo_content import CATEGORY_INFO, SEO, enrich
+from guide_content import GUIDE_DETAILS, enrich_guides
+from datetime import date
 ROOT=Path(__file__).parent
 OUT=ROOT/'dist'
 DEPLOYMENT=json.loads((ROOT/'DEPLOYMENT.json').read_text())
@@ -52,6 +54,7 @@ GUIDES.insert(0,('compress-photo-for-upload-limit','How to fit a photo under an 
 ('Preserve required dimensions','The tool first tries different encoding quality settings. With dimension reduction disabled, the original width and height are preserved. Enable dimension reduction only if the upload rules permit it. Reducing dimensions changes the image size in pixels, not just the amount of storage used.'),
 ('Inspect before submitting','Compression can soften faces, small lettering and fine detail. Download the result, check its format and dimensions, then inspect it at normal size. The tool will report failure if it cannot meet the requested limit within its supported search. Keep the original and do not assume that meeting a size limit guarantees a portal will accept the image.')],['compress-image-to-size','image-resizer','image-compressor']))
 enrich(TOOLS,GUIDES)
+enrich_guides(GUIDES)
 
 def icon(t):return f'<span class="tool-icon {t[2].lower()}">{escape(t[3])}</span>'
 def card(t):return f'<a class="tool-card" data-category="{t[2]}" data-search="{escape((t[1]+" "+t[4]).lower())}" href="/tools/{t[0]}/">{icon(t)}<span class="card-arrow" aria-hidden="true">↗</span><h3>{t[1]}</h3><p>{t[4]}</p><span class="card-category">{t[2]}</span></a>'
@@ -64,7 +67,8 @@ def shell(title,desc,path,body,kind='website',extra=''):
     if path.startswith('/tools/') and path.strip('/').split('/')[-1] in SEO:
         schemas.append({'@context':'https://schema.org','@type':'WebApplication','name':title.split(' |')[0],'url':url,'applicationCategory':'UtilitiesApplication','operatingSystem':'Any modern browser','isAccessibleForFree':True,'browserRequirements':'Requires JavaScript'})
     if path.startswith('/guides/') and path!='/guides/':
-        schemas.append({'@context':'https://schema.org','@type':'Article','headline':title.split(' |')[0],'description':desc,'mainEntityOfPage':url,'author':{'@type':'Organization','name':'Toolnest'},'publisher':{'@type':'Organization','name':'Toolnest'}})
+        dates=GUIDE_DETAILS.get(path.strip('/').split('/')[-1],{})
+        schemas.append({'@context':'https://schema.org','@type':'Article','headline':title.split(' |')[0],'description':desc,'mainEntityOfPage':url,'datePublished':dates.get('published','2026-10-21'),'dateModified':dates.get('updated','2026-10-21'),'author':{'@type':'Organization','name':'Toolnest'},'publisher':{'@type':'Organization','name':'Toolnest'}})
 
     if path.startswith('/tools/'):
         schemas.append({'@context':'https://schema.org','@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'Tools','item':BASE+'/'},{'@type':'ListItem','position':2,'name':title.split(' |')[0],'item':url}]})
@@ -98,7 +102,7 @@ for t in TOOLS:
         else:ui+='<div class="two-fields">'+inp('Width (pixels)','width',800,attrs='min="1" step="1"')+inp('Height (pixels)','height',600,attrs='min="1" step="1"')+'</div><div class="checks"><label><input type="checkbox" id="lock-ratio" checked> Keep aspect ratio</label></div>'
         if slug in ['compress-image-to-size','image-compressor']:ui=ui.replace('<option value="image/png">PNG</option>','')
         if slug=='image-resizer':ui+='<div class="two-fields"><div class="field"><label for="format">Output format</label><select id="format"><option value="image/png">PNG</option><option value="image/jpeg">JPEG</option><option value="image/webp">WebP</option></select></div>'+inp('Quality (1–100)','quality',80,attrs='min="1" max="100"')+'</div>'
-        if slug=='image-converter':ui+=inp('JPEG background color','background','#ffffff','color')
+        if slug=='image-converter':ui=ui.replace('<option value="image/jpeg">JPEG</option>','<option value="image/jpeg" selected>JPEG</option>')+inp('JPEG background color','background','#ffffff','color')
         if slug=='compress-image-to-size':ui+=inp('Maximum file size (KB)','target-kb',100,attrs='min="1" max="20480" step="1"')+'<div class="checks"><label><input type="checkbox" id="allow-shrink"> Allow smaller pixel dimensions if needed</label></div><p class="muted">The quality setting above is the maximum quality used in the search. 1 KB = 1,024 bytes.</p>'
         ui+=button('Compress to target' if slug=='compress-image-to-size' else 'Process image','image-target' if slug=='compress-image-to-size' else 'image')+output()+'<a class="button" id="download-image" hidden download="toolnest-image.webp">Download image ↓</a>'
     elif slug=='final-grade-calculator':ui='<div class="two-fields">'+inp('Current grade excluding final (%)','current-grade',82,attrs='min="0" max="100" step="any"')+inp('Target course grade (%)','target-grade',85,attrs='min="0" max="100" step="any"')+'</div>'+inp('Final exam weight (%)','final-weight',30,attrs='min="0.01" max="100" step="any"')+button('Calculate required score','final-grade')+output()+'<div id="grade-scenarios"></div>'
@@ -120,7 +124,15 @@ for g in GUIDES:
     slug,title,cat,desc,sections,related=g
     content=''.join(f'<section><h2>{escape(h)}</h2><p>{escape(p)}</p></section>' for h,p in sections)
     links=''.join(f'<a class="button secondary" href="/tools/{s}/">{next(t[1] for t in TOOLS if t[0]==s)} ↗</a>' for s in related)
-    write('/guides/'+slug+'/',title+' | Toolnest',desc,f'<article class="article"><div class="breadcrumbs"><a href="/guides/">Guides</a> / {cat}</div><span class="eyebrow">{cat} · UPDATED 21 OCTOBER 2026</span><h1>{title}</h1><p class="lead">{desc}</p>{content}<h2>Put it into practice</h2><div class="actions">{links}</div></article>')
+    details=GUIDE_DETAILS.get(slug,{})
+    updated=date.fromisoformat(details.get('updated','2026-10-21'))
+    table=''
+    if details.get('table'):
+        caption,headings,rows=details['table']
+        table='<div class="article-table"><table><caption>'+escape(caption)+'</caption><thead><tr>'+''.join('<th scope="col">'+escape(h)+'</th>' for h in headings)+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+escape(cell)+'</td>' for cell in row)+'</tr>' for row in rows)+'</tbody></table></div>'
+    faq='<section class="guide-faq"><h2>Common questions</h2>'+''.join('<details><summary>'+escape(q)+'</summary><p>'+escape(a)+'</p></details>' for q,a in details.get('faq',[]))+'</section>' if details.get('faq') else ''
+    sources='<section class="guide-sources"><h2>Sources and further reading</h2><ul>'+''.join('<li><a href="'+escape(url,quote=True)+'">'+escape(label)+'</a></li>' for label,url in details.get('sources',[]))+'</ul></section>' if details.get('sources') else ''
+    write('/guides/'+slug+'/',title+' | Toolnest',desc,f'<article class="article"><div class="breadcrumbs"><a href="/guides/">Guides</a> / {cat}</div><span class="eyebrow">{cat} · UPDATED <time datetime="{updated.isoformat()}">{updated.strftime("%d %B %Y").upper()}</time></span><h1>{title}</h1><p class="lead">{desc}</p><div class="actions guide-start">{links}</div>{table}{content}{faq}{sources}<h2>Put it into practice</h2><div class="actions">{links}</div></article>')
 category_cards=''.join(f'<a class="guide-card" href="/tools/{info[0]}/"><span class="eyebrow">{cat}</span><h2>{info[1]}</h2><p>{info[3]}</p><span>Explore {cat.lower()} ↗</span></a>' for cat,info in CATEGORY_INFO.items())
 write('/tools/','Free Online Tools by Category | Toolnest','Browse free image, writing, study and developer tools. Clear instructions, local processing and no account required.',f'<section class="content-page"><span class="eyebrow">PICK YOUR TASK</span><h1>A useful place to start.</h1><p class="lead">Choose a category, then go straight to the tool you need.</p><div class="guide-grid">{category_cards}</div></section>')
 for cat,info in CATEGORY_INFO.items():

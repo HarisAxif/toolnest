@@ -1,10 +1,10 @@
 # Toolnest SEO and usefulness audit
 
-Reviewed: 21 October 2026. Budget constraint: no paid domain, hosting, API, keyword service or SEO subscription. Goal: attract useful organic visits from English-speaking audiences, including the US, UK, Canada and Australia, then apply for AdSense. Income and audience geography are not guaranteed.
+Reviewed: 22 October 2026. Budget constraint: no paid domain, hosting, API, keyword service or SEO subscription. Goal: attract useful organic visits from English-speaking audiences, including the US, UK, Canada and Australia. The site is intended for AdSense monetization. Income and audience geography are not guaranteed.
 
 ## Honest assessment
 
-The tools solve real tasks, but the category is crowded. Search-result checks for target-size image compression, final exam grades and large-number-safe JSON formatting returned many competing implementations. These searches establish relevant vocabulary and competition, not monthly search volume, keyword difficulty or likely rankings. No paid keyword data, Search Console property or live analytics was available. No traffic or conversion uplift has been measured.
+The tools solve real tasks, but the category is crowded. Search-result checks for target-size image compression, final exam grades and large-number-safe JSON formatting returned many competing implementations. These searches establish relevant vocabulary and competition, not monthly search volume, keyword difficulty or likely rankings. Search Console is now verified. Its 22 October snapshot has no usable query data; the displayed Web performance report shows zero clicks and impressions through 20 October, before the Pages launch. That delayed report is not a count of current visitors. No traffic or conversion uplift has been measured.
 
 The initial generic directory did not establish a competitive advantage. This revision improves actual utility: selectable output formats, transparency handling, file-size verification, number-preserving JSON formatting and required-final-score scenarios. The site still needs public search data and iterative product improvements to establish which audience it can serve better.
 
@@ -38,7 +38,7 @@ No fake offices, addresses, location metadata, country redirects or geographic b
 
 ## Content structure
 
-15 working tools, four category hubs, an all-categories page and six original guides. Each tool has its own title, description, instructions, example, limitations and related links. Guides link directly to relevant tools and tools link back to applicable guides. Category hubs group the actual tasks instead of generating broad keyword lists.
+15 working tools, four category hubs, an all-categories page and seven original guides. Each tool has its own title, description, instructions, example, limitations and related links. Guides link directly to relevant tools and tools link back to applicable guides. Category hubs group the actual tasks instead of generating broad keyword lists.
 
 WebSite, WebPage, WebApplication, Article and breadcrumb structured data describe real content. No fake ratings, review counts, claimed expertise or unsupported rich-result promises. Public pages are rendered HTML with unique canonical URLs. Search/filter controls do not create indexable URL variants.
 
@@ -54,9 +54,19 @@ WebSite, WebPage, WebApplication, Article and breadcrumb structured data describ
 
 ## Launch blockers and limits
 
-The public Cloudflare Pages site is https://toolnest-haris.pages.dev/, with approved support contact harisaxif@gmail.com, indexable content, stable canonicals and a 32-URL sitemap. The separate Sites preview remains owner-private and noindex. The Pages Search Console property was verified on 22 October 2026 and its sitemap submitted. Google's live sitemap fetch succeeded, but its sitemap report initially said Couldn't fetch and a homepage indexing request reached daily quota. Indexing and field Core Web Vitals are not yet established; actual mobile device QA has not been completed.
+The public Cloudflare Pages site is https://toolnest-haris.pages.dev/, with approved support contact harisaxif@gmail.com, indexable content, stable canonicals and a 33-URL sitemap after this content update. The separate Sites preview remains owner-private and noindex. The Pages Search Console property was verified on 22 October 2026 and its sitemap submitted. Google's live sitemap fetch succeeded, but its sitemap report still said Couldn't fetch in the later 22 October check. A homepage indexing request reached daily quota; do not retry that day. Indexing and field Core Web Vitals are not yet established; actual mobile device QA has not been completed.
 
 The owner created an AdSense account on 22 October 2026. Its real publisher ID is configured for the production ownership meta tag and ads.txt record. No analytics, ad-serving scripts or consent manager are installed. Complete payment/identity information, site verification/review, suitable consent controls and advertising privacy updates before activating ads. Do not use pretend IDs or a blanket cookie banner to imply compliance.
+
+## Content batch: 22 October 2026
+
+- Expanded the existing upload-limit guide around compressing to 100 KB or 200 KB without silently changing required pixel dimensions. Added exact byte thresholds, troubleshooting and direct tool links.
+- Expanded the final-exam guide around the score needed to pass, with four checked examples, gradebook-input guidance, rounding and minimum-exam cautions.
+- Added a distinct guide for resizing without stretching, including proportional pixel examples and the difference between pixels, KB and print-resolution metadata.
+- Added visible FAQs, primary-reference links, early tool buttons and factual per-guide publication/modification dates. No FAQ rich-result eligibility is claimed.
+- Set Image converter's initial output to JPEG, matching the common WebP-to-JPG workflow while retaining PNG and WebP choices.
+
+The maintained query families include compress image to 100 KB/200 KB without resizing, resize image without stretching, and what grade do I need on my final to pass. They describe real supported tasks; no volume or ranking claims are attached. See SEO_GROWTH_LOG.md for validation and measurement limits.
 
 ## Maintenance and seasonal opportunities
 
