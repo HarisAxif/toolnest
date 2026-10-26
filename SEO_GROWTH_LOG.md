@@ -34,3 +34,13 @@ Monitor sitemap processing and actual indexing without repeated same-day quota a
 - MDN canvas export and resolution metadata: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
 - MDN image formats: https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Image_types
 - Canvas current and total grades: https://community.instructure.com/en/kb/articles/661305-how-do-i-view-my-grades-in-a-current-course
+
+## 26 October 2026
+
+Expanded the existing /guides/weighted-grades-and-gpa/ page around calculating GPA with credit hours and combining semester GPAs. Added an original course table, a cumulative-GPA example, four visible FAQs and primary references from Illinois and UBC. Explained the difference between zero-point included courses and excluded pass/fail courses, transcript rounding/truncation and assessment percentages. The existing URL and original publication date remain; modification date reflects this substantive revision. No country-specific or duplicate GPA pages were created. Guide-directory and calculator links inherit the revised descriptive title.
+
+Authenticated search reports were unavailable during this check. No new query, country, indexing or traffic result is established; the prior dated report remains historical. This batch is based on documented task requirements and checked arithmetic, without search-volume or uplift claims.
+
+Validation targets: course example (3 × 4 + 2 × 3) ÷ 5 = 3.60; cumulative example (42 × 3.20 + 18 × 3.80) ÷ 60 = 3.38; partial assessment average (80 × 40 + 90 × 20) ÷ 60 = 83.333333%. Run the production static/JSON checks and verify the actual live guide and deployment separately.
+
+Validation completed: production build/static/JSON checks passed with 33 sitemap URLs. Independent decimal arithmetic passed; browser preview returned 3.38 on 60 credits and the cumulative-GPA FAQ expanded correctly. Publication still requires the Pages check and live readback.
