@@ -44,3 +44,11 @@ Authenticated search reports were unavailable during this check. No new query, c
 Validation targets: course example (3 × 4 + 2 × 3) ÷ 5 = 3.60; cumulative example (42 × 3.20 + 18 × 3.80) ÷ 60 = 3.38; partial assessment average (80 × 40 + 90 × 20) ÷ 60 = 83.333333%. Run the production static/JSON checks and verify the actual live guide and deployment separately.
 
 Validation completed: production build/static/JSON checks passed with 33 sitemap URLs. Independent decimal arithmetic passed; browser preview returned 3.38 on 60 credits and the cumulative-GPA FAQ expanded correctly. Publication still requires the Pages check and live readback.
+
+## 29 October 2026
+
+Expanded /guides/format-json-with-large-numbers/ with token-preservation examples, five visible FAQs, syntax troubleshooting, numeric and duplicate-key interoperability cautions, and exact implementation limits. Primary references are RFC 8259 and MDN JSON.parse. Preserved the existing URL, title and original publication date; modification date reflects the substantive revision. No new duplicate pages or unrelated keyword variants.
+
+The 26 October release (1be2dbd41ccec446508e5afe95135c7d109411f9) was confirmed with the Cloudflare Pages success check and all affected live links that day. This historical deployment confirmation does not establish indexing or traffic uplift. No fresh authenticated query or country measurements are available for this batch.
+
+Validation: production build/static checks and token-integrity tests pass; examples cover large identifiers, decimal/exponent spelling, escaped strings, repeated keys, invalid syntax and nesting limits. Browser preview confirmed the guide table, readable layout and expandable duplicate-key FAQ. Public deployment and actual live readback must be checked separately.
